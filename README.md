@@ -1,5 +1,5 @@
 # A Convolution Neural Network (CNN) From Scratch
-This was written for a blog post on https://victorzhou.com.
+This was written for my blog post [CNNs, Part 1: An Introduction to Convolution Neural Networks](https://victorzhou.com/blog/intro-to-cnns-part-1/).
 
 ## Usage
 
