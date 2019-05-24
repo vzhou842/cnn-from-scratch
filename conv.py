@@ -35,6 +35,8 @@ class Conv3x3:
     Returns a 3d numpy array with dimensions (h, w, num_filters).
     - input is a 2d numpy array
     '''
+    self.last_input = input
+
     h, w = input.shape
     output = np.zeros((h - 2, w - 2, self.num_filters))
 
@@ -42,3 +44,14 @@ class Conv3x3:
       output[i, j] = np.sum(im_region * self.filters, axis=(1, 2))
 
     return output
+
+  def backprop(self, d_L_d_output, learn_rate):
+    d_L_d_filters = np.zeros(self.filters.shape)
+
+    for im_region, i, j in self.iterate_regions(self.last_input):
+      for f in range(self.num_filters):
+        d_L_d_filters[f] += d_L_d_output[i, j, f] * im_region
+
+    self.filters -= learn_rate * d_L_d_filters
+
+    return
