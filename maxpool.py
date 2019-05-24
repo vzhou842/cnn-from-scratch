@@ -10,7 +10,7 @@ class MaxPool2:
     '''
     h, w, _ = image.shape
     new_h = h // 2
-    new_w = h // 2
+    new_w = w // 2
 
     for i in range(new_h):
       for j in range(new_w):
