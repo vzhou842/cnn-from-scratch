@@ -17,7 +17,6 @@ class MaxPool2:
         im_region = image[(i * 2):(i * 2 + 2), (j * 2):(j * 2 + 2)]
         yield im_region, i, j
 
-
   def forward(self, input):
     '''
     Performs a forward pass of the maxpool layer using the given input.
@@ -34,7 +33,12 @@ class MaxPool2:
 
     return output
 
-  def backprop(self, d_L_d_output):
+  def backprop(self, d_L_d_out):
+    '''
+    Performs a backward pass of the maxpool layer.
+    Returns the loss gradient for this layer's inputs.
+    - d_L_d_out is the loss gradient for this layer's outputs.
+    '''
     d_L_d_input = np.zeros(self.last_input.shape)
 
     for im_region, i, j in self.iterate_regions(self.last_input):
@@ -44,8 +48,8 @@ class MaxPool2:
       for i2 in range(h):
         for j2 in range(w):
           for f2 in range(f):
+            # If this pixel was the max value, copy the gradient to it.
             if im_region[i2, j2, f2] == amax[f2]:
-              d_L_d_input[i * 2 + i2, j * 2 + j2, f2] = d_L_d_output[i, j, f2]
-
+              d_L_d_input[i * 2 + i2, j * 2 + j2, f2] = d_L_d_out[i, j, f2]
 
     return d_L_d_input
