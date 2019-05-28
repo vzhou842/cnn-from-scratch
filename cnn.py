@@ -4,14 +4,12 @@ from conv import Conv3x3
 from maxpool import MaxPool2
 from softmax import Softmax
 
-# The mnist package takes care of handling the MNIST dataset for us!
-# Learn more at https://github.com/datapythonista/mnist
-# We only use the first 1k training examples (out of 60k total) in the interest of time.
+# We only use the first 1k examples of each set in the interest of time.
 # Feel free to change this if you want.
 train_images = mnist.train_images()[:1000]
 train_labels = mnist.train_labels()[:1000]
-test_images = mnist.test_images()
-test_labels = mnist.test_labels()
+test_images = mnist.test_images()[:1000]
+test_labels = mnist.test_labels()[:1000]
 
 conv = Conv3x3(8)                  # 28x28x1 -> 26x26x8
 pool = MaxPool2()                  # 26x26x8 -> 13x13x8
@@ -60,6 +58,7 @@ def train(im, label, lr=.005):
 
 print('MNIST CNN initialized!')
 
+# Train the CNN for 3 epochs
 for epoch in range(3):
   print('--- Epoch %d ---' % (epoch + 1))
 
@@ -83,3 +82,16 @@ for epoch in range(3):
     l, acc = train(im, label)
     loss += l
     num_correct += acc
+
+# Test the CNN
+print('\n--- Testing the CNN ---')
+loss = 0
+num_correct = 0
+for im, label in zip(test_images, test_labels):
+  _, l, acc = forward(im, label)
+  loss += l
+  num_correct += acc
+
+num_tests = len(test_images)
+print('Test Loss:', loss / num_tests)
+print('Test Accuracy:', num_correct / num_tests)
