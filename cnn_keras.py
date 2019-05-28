@@ -23,13 +23,13 @@ model = Sequential([
   Dense(10, activation='softmax'),
 ])
 
-model.compile(SGD(lr=0.005), loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(SGD(lr=.005), loss='categorical_crossentropy', metrics=['accuracy'])
 
 model.fit(
   train_images,
   to_categorical(train_labels),
   batch_size=1,
-  epochs=5,
+  epochs=3,
   validation_data=(test_images, to_categorical(test_labels)),
 )
 
